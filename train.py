@@ -108,7 +108,7 @@ class Trainer:
                         tf.summary.scalar('loss', loss, step)
                         tf.summary.scalar('grad norm', norm, step)
                         if step % self.eval_intval == 0:
-                            pred, _ = self.model.inference(logmel)
+                            pred, _ = self.model(logmel)
                             tf.summary.audio(
                                 'train', pred[..., None], self.config.data.sr, step)
                             tf.summary.image(
@@ -182,7 +182,7 @@ class Trainer:
         # [1, T // hop, mel]
         _, logmel = lj.mel_fn(speech[None])
         # [1, T]
-        pred, ir = self.model(mel=logmel)
+        pred, ir = self.model(logmel)
         # [T]
         pred = tf.squeeze(pred, axis=0).numpy()
         # config.model.iter x [T]
