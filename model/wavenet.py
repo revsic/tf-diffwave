@@ -4,26 +4,27 @@ import tensorflow as tf
 class Block(tf.keras.Model):
     """WaveNet Block.
     """
-    def __init__(self, channels, kernel_size, dilation, cond=True):
+    def __init__(self, channels, kernel_size, dilation, cond=True, last=False):
         """Initializer.
         Args:
             channels: int, basic channel size.
             kernel_size: int, kernel size of the dilated convolution.
             dilation: int, dilation rate.
             cond: bool, whether use conditional inputs or not.
+            last: bool, last block or not.
         """
         super(Block, self).__init__()
         self.channels = channels
         self.cond = cond
+        self.last = last
 
         self.proj_embed = tf.keras.layers.Dense(channels)
         self.conv = tf.keras.layers.Conv1D(
             channels * 2, kernel_size, padding='same', dilation_rate=dilation)
-
         if cond:
             self.proj_mel = tf.keras.layers.Conv1D(channels * 2, 1)
-
-        self.proj_res = tf.keras.layers.Conv1D(channels, 1)
+        if not last:
+            self.proj_res = tf.keras.layers.Conv1D(channels, 1)
         self.proj_skip = tf.keras.layers.Conv1D(channels, 1)
 
     def call(self, inputs, embedding, mel=None):
@@ -49,7 +50,7 @@ class Block(tf.keras.Model):
         gate = tf.math.sigmoid(x[..., self.channels:])
         x = context * gate
         # [B, T, C]
-        residual = self.proj_res(x) + inputs
+        residual = self.proj_res(x) + inputs if not self.last else None
         skip = self.proj_skip(x)
         return residual, skip
 
@@ -84,7 +85,12 @@ class WaveNet(tf.keras.Model):
         for i in range(config.num_layers):
             dilation = config.dilation_rate ** (i % config.num_cycles)
             self.blocks.append(
-                Block(config.channels, config.kernel_size, dilation, config.use_mel))
+                Block(
+                    config.channels,
+                    config.kernel_size,
+                    dilation,
+                    config.use_mel,
+                    last=i == config.num_layers - 1))
         # [1, 1, C], initial skip block
         self.skip = tf.zeros([1, 1, config.channels])    
         # for output
