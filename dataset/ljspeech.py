@@ -44,11 +44,11 @@ class LJSpeech:
             tf.data.Dataset, data loader.
         """
         if from_tfds:
-            dataset = tfds.load(
+            dataset, info = tfds.load(
                 'ljspeech', split='train',
                 data_dir=data_dir, download=download, with_info=True)
             # filter only audio
-            return dataset.map(LJSpeech._preproc_tfds)
+            return dataset.map(LJSpeech._preproc_tfds), info
         # generate file lists
         files = tf.data.Dataset.from_tensor_slices(
             [os.path.join(data_dir, n) for n in os.listdir(data_dir)])
@@ -96,6 +96,7 @@ class LJSpeech:
             Returns:
                 tf.Tensor, [frames], fixed size speech signal in range (-1, 1). 
             """
+            nonlocal frames
             frames = frames // self.config.hop * self.config.hop
             start = tf.random.uniform(
                 (), 0, tf.shape(speech)[0] - frames, dtype=tf.int32)
@@ -133,7 +134,7 @@ class LJSpeech:
         """
         if self.normalized is None:
             self.normalized = self.rawset \
-                .map(self.normalizer(self.config.sec)) \
+                .map(self.normalizer(self.config.frames)) \
                 .batch(self.config.batch) \
                 .map(self.mel_fn)
         return self.normalized
