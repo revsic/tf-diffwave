@@ -68,7 +68,7 @@ class Trainer:
         timesteps = tf.random.uniform(
             [bsize], 1, self.config.model.iter + 1, dtype=tf.int32)
         # [B]
-        noise_level = tf.gather(self.alpha_bar, timesteps)
+        noise_level = tf.gather(self.alpha_bar, timesteps - 1)
         # [B, T], [B, T]
         noised, noise = self.model.diffusion(signal, noise_level)
         # [B, T]
@@ -178,7 +178,7 @@ class Trainer:
                 intermediate represnetations.
         """
         # [T]
-        datum = next(iter(lj.rawset))
+        speech = next(iter(lj.rawset))
         # [1, T // hop, mel]
         _, logmel = lj.mel_fn(speech[None])
         # [1, T]
