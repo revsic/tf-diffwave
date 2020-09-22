@@ -65,6 +65,8 @@ class DiffWave(tf.keras.Model):
         """
         if eps is None:
             eps = tf.random.normal(tf.shape(signal))
+        if isinstance(alpha_bar, tf.Tensor):
+            alpha_bar = alpha_bar[:, None]
         return tf.sqrt(alpha_bar) * signal + tf.sqrt(1 - alpha_bar) * eps, eps
 
     def pred_noise(self, signal, timestep, mel=None):
@@ -83,17 +85,17 @@ class DiffWave(tf.keras.Model):
         Args:
             signal: tf.Tensor, [B, T], noised signal.
             eps: tf.Tensor, [B, T], estimated noise.
-            alpha: Union[float, tf.Tensor: [B]], 1 - beta.
-            alpha_bar: Union[float, tf.Tensor: [B]], cumprod(1 - beta).
+            alpha: float, 1 - beta.
+            alpha_bar: float, cumprod(1 - beta).
         Returns:
             tuple,
                 mean: tf.Tensor, [B, T], estimated mean of denoised signal.
                 stddev: float, estimated stddev.
         """
         # [B, T]
-        mean = (signal - (1 - alpha) / tf.sqrt(1 - alpha_bar) * eps) / tf.sqrt(alpha)
+        mean = (signal - (1 - alpha) / np.sqrt(1 - alpha_bar) * eps) / np.sqrt(alpha)
         # []
-        stddev = tf.sqrt((1 - alpha_bar / alpha) / (1 - alpha_bar) * (1 - alpha))
+        stddev = np.sqrt((1 - alpha_bar / alpha) / (1 - alpha_bar) * (1 - alpha))
         return mean, stddev
 
     def write(self, path, optim=None):
