@@ -52,4 +52,5 @@ class Config:
         Returns:
             List[float], [iter], beta values.
         """
-        return np.linspace(self.noise_start, self.noise_end, self.iter)
+        return np.linspace(
+            self.noise_start, self.noise_end, self.iter, dtype=np.float32)
