@@ -30,10 +30,10 @@ class Config:
         self.num_cycles = 3
 
         # noise schedule
-        self.iter = 20
+        self.iter = 50                  # 20, 40, 50
         self.noise_policy = 'linear'
         self.noise_start = 1e-4
-        self.noise_end = 0.05
+        self.noise_end = 0.05           # 0.02 for 200
 
     def beta(self):
         """Generate beta-sequence.
