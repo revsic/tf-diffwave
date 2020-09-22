@@ -19,6 +19,8 @@ class Config:
         self.upsample_stride = [16, 1]
         self.upsample_kernel = [32, 3]
         self.upsample_layers = 2
+        # computed hop size
+        self.hop = self.upsample_stride[0] ** self.upsample_layers
 
         # block config
         self.channels = 64
