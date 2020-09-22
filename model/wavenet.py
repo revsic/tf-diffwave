@@ -31,7 +31,7 @@ class Block(tf.keras.Model):
         Args:
             inputs: tf.Tensor, [B, T, C(=channels)], input tensor.
             embedding: tf.Tensor, [B, E], embedding tensor for noise schedules.
-            mel: Optional[tf.Tensor], [B, T, M], mel-spectrogram conditions.
+            mel: Optional[tf.Tensor], [B, T // hop, M], mel-spectrogram conditions.
         Returns:
             residual: tf.Tensor, [B, T, C], output tensor for residual connection.
             skip: tf.Tensor, [B, T, C], output tensor for skip connection.
@@ -96,8 +96,8 @@ class WaveNet(tf.keras.Model):
         """Generate output signal.
         Args:
             signal: tf.Tensor, [B, T], noised signal.
-            mel: tf.Tensor, [B, T, M], mel-spectrogram.
             timestep: tf.Tensor, [B], int, timesteps of current markov chain.
+            mel: Optional[tf.Tensor], [B, T // hop, M], mel-spectrogram.
         Returns:
             tf.Tensor, [B, T], generated.
         """
