@@ -1,2 +1,6 @@
 # python
 __pycache__
+
+# train
+ckpt
+log
