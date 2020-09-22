@@ -86,3 +86,29 @@ class DiffWave(tf.keras.Model):
         # []
         stddev = tf.sqrt((1 - alpha_bar / alpha) / (1 - alpha_bar) * (1 - alpha))
         return mean, stddev
+
+    def write(self, path, optim=None):
+        """Write checkpoint with `tf.train.Checkpoint`.
+        Args:
+            path: str, path to write.
+            optim: Optional[tf.keras.optimizers.Optimizer]
+                , optional optimizer.
+        """
+        kwargs = {'model': self}
+        if optim is not None:
+            kwargs['optim'] = optim
+        ckpt = tf.train.Checkpoint(**kwargs)
+        ckpt.save(path)
+
+    def restore(self, path, optim=None):
+        """Restore checkpoint with `tf.train.Checkpoint`.
+        Args:
+            path: str, path to restore.
+            optim: Optional[tf.keras.optimizers.Optimizer]
+                , optional optimizer.
+        """
+        kwargs = {'model': self}
+        if optim is not None:
+            kwargs['optim'] = optim
+        ckpt = tf.train.Checkpoint(**kwargs)
+        ckpt.restore(path)
