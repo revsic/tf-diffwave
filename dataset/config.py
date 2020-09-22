@@ -25,8 +25,8 @@ class Config:
         self.eps = 1e-5
 
         # sample size
-        self.frames = 16000
-        self.batch = 16
+        self.frames = 6400
+        self.batch = 8
 
     def window_fn(self):
         """Return window generator.
