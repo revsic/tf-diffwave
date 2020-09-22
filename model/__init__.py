@@ -17,12 +17,12 @@ class DiffWave(tf.keras.Model):
         self.config = config
         self.wavenet = WaveNet(config)
 
-    def call(self, noise=None, mel=None):
+    def call(self, mel, noise=None):
         """Generate denoised audio.
         Args:
-            noise: Optional[tf.Tensor], [B, T], starting noise.
-            mel: Optional[tf.Tensor], [B, T // hop, M], conditonal mel-spectrogram,
+            mel: tf.Tensor, [B, T // hop, M], conditonal mel-spectrogram,
                 either noise or mel is not None.
+            noise: Optional[tf.Tensor], [B, T], starting noise.
         Returns:
             tuple,
                 signal: tf.Tensor, [B, T], predicted output.
