@@ -17,16 +17,23 @@ class DiffWave(tf.keras.Model):
         self.config = config
         self.wavenet = WaveNet(config)
 
-    def call(self, noise, mel=None):
+    def call(self, noise=None, mel=None):
         """Generate denoised audio.
         Args:
-            noise: tf.Tensor, [B, T], starting noise.
-            mel: Optional[tf.Tensor], [B, T // hop, M], conditonal mel-spectrogram.
+            noise: Optional[tf.Tensor], [B, T], starting noise.
+            mel: Optional[tf.Tensor], [B, T // hop, M], conditonal mel-spectrogram,
+                either noise or mel is not None.
         Returns:
             tuple,
                 signal: tf.Tensor, [B, T], predicted output.
                 ir: List[np.ndarray: [B, T]], intermediate outputs.
         """
+        if noise is None:
+            # [B, T // hop, M]
+            b, t, _ = tf.shape(mel)
+            # [B, T]
+            noise = tf.random.normal([b, t * self.config.hop])
+
         # [iter]
         alpha = 1 - self.config.beta()
         alpha_bar = np.cumprod(alpha)
@@ -52,11 +59,13 @@ class DiffWave(tf.keras.Model):
             alpha_bar: Union[float, tf.Tensor: [B]], cumprod(1 -beta).
             eps: Optional[tf.Tensor: [B, T]], noise.
         Return:
-            tf.Tensor, [B, T], noised signal.
+            tuple,
+                noised: tf.Tensor, [B, T], noised signal.
+                eps: tf.Tensor, [B, T], noise.
         """
         if eps is None:
             eps = tf.random.normal(tf.shape(signal))
-        return tf.sqrt(alpha_bar) * signal + tf.sqrt(1 - alpha_bar) * eps
+        return tf.sqrt(alpha_bar) * signal + tf.sqrt(1 - alpha_bar) * eps, eps
 
     def pred_noise(self, signal, timestep, mel=None):
         """Predict noise from signal.
