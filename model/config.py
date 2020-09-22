@@ -45,7 +45,7 @@ class Config:
         }
         if self.noise_policy not in mapper:
             raise ValueError('invalid beta policy')
-        return mapper[self.noise_policy]
+        return mapper[self.noise_policy]()
 
     def _linear_sched(self):
         """Linearly generated noise.
