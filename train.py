@@ -72,7 +72,7 @@ class Trainer:
         # [B, T], [B, T]
         noised, noise = self.model.diffusion(signal, noise_level)
         # [B, T]
-        eps = self.model.pred_noise(signal, timesteps, logmel)
+        eps = self.model.pred_noise(noised, timesteps, logmel)
         # []
         loss = tf.reduce_mean(tf.abs(eps - noise))
         return loss
