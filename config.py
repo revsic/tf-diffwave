@@ -1,5 +1,6 @@
 from dataset.config import Config as DataConfig
 from model.config import Config as ModelConfig
+from utils.noam_schedule import NoamScheduler
 
 
 class TrainConfig:
@@ -7,10 +8,18 @@ class TrainConfig:
     """
     def __init__(self):
         # optimizer
-        self.learning_rate = 2e-4
+        # self.lr_policy = 'fixed
+        # self.learning_rate = 2e-4        
+        self.lr_policy = 'noam'
+        self.learning_rate = 1
+        self.lr_params = {
+            'warmup_steps': 4000,
+            'channels': 64
+        }
+
         self.beta1 = 0.9
-        self.beta2 = 0.999
-        self.eps = 1e-8
+        self.beta2 = 0.98
+        self.eps = 1e-9
 
         # 13000:100
         self.split = 13000
@@ -23,11 +32,23 @@ class TrainConfig:
         self.ckpt = './ckpt'
 
         # model name
-        self.name = 'a2'
+        self.name = 'n1'
 
         # interval configuration
         self.eval_intval = 5000
         self.ckpt_intval = 10000
+
+    def lr(self):
+        """Generate proper learning rate scheduler.
+        """
+        mapper = {
+            'noam': NoamScheduler
+        }
+        if self.lr_policy == 'fixed':
+            return self.learning_rate
+        if self.lr_policy in mapper:
+            return mapper[self.lr_policy](self.learning_rate, **self.lr_params)
+        raise ValueError('invalid lr_policy')
 
 class Config:
     """Integrated configuration.
