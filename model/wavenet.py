@@ -64,7 +64,8 @@ class WaveNet(tf.keras.Model):
         self.config = config
         # signal proj
         self.proj = tf.keras.layers.Conv1D(config.channels, 1)
-        # embedding proj
+        # embedding
+        self.embed = self.embedding(config.iter)
         self.proj_embed = [
             tf.keras.layers.Dense(config.embedding_proj)
             for _ in range(config.embedding_layers)]
@@ -105,7 +106,7 @@ class WaveNet(tf.keras.Model):
         # [B, T, C(=channels)]
         x = tf.nn.relu(self.proj(signal[..., None]))
         # [B, E']
-        embed = self.embedding(timestep)
+        embed = tf.gather(self.embed, timestep - 1)
         # [B, E]
         for proj in self.proj_embed:
             embed = tf.nn.swish(proj(embed))
@@ -128,18 +129,19 @@ class WaveNet(tf.keras.Model):
         # [B, T]
         return tf.squeeze(context, axis=-1)
 
-    def embedding(self, timestep):
+    def embedding(self, iter):
         """Generate embedding.
         Args:
-            timestep: tf.Tensor, [B], int, current timesteps.
+            iter: int, maximum iteration.
         Returns:
-            tf.Tensor, [B, E(=embedding_size)], embedding vectors.
+            tf.Tensor, [iter, E(=embedding_size)], embedding vectors.
         """
         # [E // 2]
-        logit = tf.linspace(0., 1., self.config.embedding_size // 2) * \
-            self.config.embedding_factor
-        exp = tf.pow(10, logit)
-        # [B, E // 2]
+        logit = tf.linspace(0., 1., self.config.embedding_size // 2)
+        exp = tf.pow(10, logit * self.config.embedding_factor)
+        # [iter]
+        timestep = tf.range(1, iter + 1)
+        # [iter, E // 2]
         comp = exp[None] * tf.cast(timestep[:, None], tf.float32)
-        # [B, E]
+        # [iter, E]
         return tf.concat([tf.sin(comp), tf.cos(comp)], axis=-1)
