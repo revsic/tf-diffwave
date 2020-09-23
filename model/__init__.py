@@ -20,8 +20,7 @@ class DiffWave(tf.keras.Model):
     def call(self, mel, noise=None):
         """Generate denoised audio.
         Args:
-            mel: tf.Tensor, [B, T // hop, M], conditonal mel-spectrogram,
-                either noise or mel is not None.
+            mel: tf.Tensor, [B, T // hop, M], conditonal mel-spectrogram.
             noise: Optional[tf.Tensor], [B, T], starting noise.
         Returns:
             tuple,
@@ -69,12 +68,12 @@ class DiffWave(tf.keras.Model):
             alpha_bar = alpha_bar[:, None]
         return tf.sqrt(alpha_bar) * signal + tf.sqrt(1 - alpha_bar) * eps, eps
 
-    def pred_noise(self, signal, timestep, mel=None):
+    def pred_noise(self, signal, timestep, mel):
         """Predict noise from signal.
         Args:
             signal: tf.Tensor, [B, T], noised signal.
             timestep: tf.Tensor, [B], timesteps of current markov chain.
-            mel: Optional[tf.Tensor], [B, T // hop, M], conditional mel-spectrogram.
+            mel: tf.Tensor, [B, T // hop, M], conditional mel-spectrogram.
         Returns:
             tf.Tensor, [B, T], predicted noise.
         """

@@ -4,13 +4,12 @@ import tensorflow as tf
 class Block(tf.keras.Model):
     """WaveNet Block.
     """
-    def __init__(self, channels, kernel_size, dilation, cond=True, last=False):
+    def __init__(self, channels, kernel_size, dilation, last=False):
         """Initializer.
         Args:
             channels: int, basic channel size.
             kernel_size: int, kernel size of the dilated convolution.
             dilation: int, dilation rate.
-            cond: bool, whether use conditional inputs or not.
             last: bool, last block or not.
         """
         super(Block, self).__init__()
@@ -21,18 +20,19 @@ class Block(tf.keras.Model):
         self.proj_embed = tf.keras.layers.Dense(channels)
         self.conv = tf.keras.layers.Conv1D(
             channels * 2, kernel_size, padding='same', dilation_rate=dilation)
-        if cond:
-            self.proj_mel = tf.keras.layers.Conv1D(channels * 2, 1)
+
+        self.proj_mel = tf.keras.layers.Conv1D(channels * 2, 1)
+
         if not last:
             self.proj_res = tf.keras.layers.Conv1D(channels, 1)
         self.proj_skip = tf.keras.layers.Conv1D(channels, 1)
 
-    def call(self, inputs, embedding, mel=None):
+    def call(self, inputs, embedding, mel):
         """Pass wavenet block.
         Args:
             inputs: tf.Tensor, [B, T, C(=channels)], input tensor.
             embedding: tf.Tensor, [B, E], embedding tensor for noise schedules.
-            mel: Optional[tf.Tensor], [B, T // hop, M], mel-spectrogram conditions.
+            mel: tf.Tensor, [B, T // hop, M], mel-spectrogram conditions.
         Returns:
             residual: tf.Tensor, [B, T, C], output tensor for residual connection.
             skip: tf.Tensor, [B, T, C], output tensor for skip connection.
@@ -42,9 +42,7 @@ class Block(tf.keras.Model):
         # [B, T, C]
         x = inputs + embedding[:, None]
         # [B, T, Cx2]
-        x = self.conv(x)
-        if mel is not None and self.cond:
-            x = x + self.proj_mel(mel)
+        x = self.conv(x) + self.proj_mel(mel)
         # [B, T, C]
         context = tf.math.tanh(x[..., :self.channels])
         gate = tf.math.sigmoid(x[..., self.channels:])
@@ -72,14 +70,13 @@ class WaveNet(tf.keras.Model):
             tf.keras.layers.Dense(config.embedding_proj)
             for _ in range(config.embedding_layers)]
         # mel-upsampler
-        if config.use_mel:
-            self.upsample = [
-                tf.keras.layers.Conv2DTranspose(
-                    1,
-                    config.upsample_kernel,
-                    config.upsample_stride,
-                    padding='same')
-                for _ in range(config.upsample_layers)]
+        self.upsample = [
+            tf.keras.layers.Conv2DTranspose(
+                1,
+                config.upsample_kernel,
+                config.upsample_stride,
+                padding='same')
+            for _ in range(config.upsample_layers)]
         # wavenet blocks
         self.blocks = []
         for i in range(config.num_layers):
@@ -98,12 +95,12 @@ class WaveNet(tf.keras.Model):
             tf.keras.layers.Conv1D(config.channels, 1, activation=tf.nn.relu),
             tf.keras.layers.Conv1D(1, 1)]
 
-    def call(self, signal, timestep, mel=None):
+    def call(self, signal, timestep, mel):
         """Generate output signal.
         Args:
             signal: tf.Tensor, [B, T], noised signal.
             timestep: tf.Tensor, [B], int, timesteps of current markov chain.
-            mel: Optional[tf.Tensor], [B, T // hop, M], mel-spectrogram.
+            mel: tf.Tensor, [B, T // hop, M], mel-spectrogram.
         Returns:
             tf.Tensor, [B, T], generated.
         """
@@ -114,13 +111,12 @@ class WaveNet(tf.keras.Model):
         # [B, E]
         for proj in self.proj_embed:
             embed = tf.nn.swish(proj(embed))
-        if mel is not None and self.config.use_mel:
-            # [B, T, M, 1], treat as 2D tensor.
-            mel = mel[..., None]
-            for upsample in self.upsample:
-                mel = tf.nn.leaky_relu(upsample(mel), self.config.leak)
-            # [B, T, M]
-            mel = tf.squeeze(mel, axis=-1)
+        # [B, T, M, 1], treat as 2D tensor.
+        mel = mel[..., None]
+        for upsample in self.upsample:
+            mel = tf.nn.leaky_relu(upsample(mel), self.config.leak)
+        # [B, T, M]
+        mel = tf.squeeze(mel, axis=-1)
         # [1, 1, C]
         context = self.skip
         for block in self.blocks:
