@@ -37,7 +37,7 @@ class DiffWave(tf.keras.Model):
         alpha = 1 - self.config.beta()
         alpha_bar = np.cumprod(alpha)
         # [B]
-        base = tf.ones([tf.shape(noise)[0]])
+        base = tf.ones([tf.shape(noise)[0]], dtype=tf.int32)
 
         ir, signal = [], noise
         for t in range(self.config.iter, 0, -1):
