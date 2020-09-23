@@ -86,9 +86,7 @@ class WaveNet(tf.keras.Model):
                     config.channels,
                     config.kernel_size,
                     dilation,
-                    last=i == config.num_layers - 1))
-        # [1, 1, C], initial skip block
-        self.skip = tf.zeros([1, 1, config.channels])    
+                    last=i == config.num_layers - 1))  
         # for output
         self.proj_out = [
             tf.keras.layers.Conv1D(config.channels, 1, activation=tf.nn.relu),
@@ -116,13 +114,14 @@ class WaveNet(tf.keras.Model):
             mel = tf.nn.leaky_relu(upsample(mel), self.config.leak)
         # [B, T, M]
         mel = tf.squeeze(mel, axis=-1)
-        # [1, 1, C]
-        context = self.skip
+
+        context = []
         for block in self.blocks:
             # [B, T, C], [B, T, C]
             x, skip = block(x, embed, mel)
-            # [B, T, C]
-            context = context + skip
+            context.append(skip)
+        # [B, T, C]
+        context = tf.reduce_sum(context, axis=0)
         # [B, T, 1]
         for proj in self.proj_out:
             context = proj(context)
