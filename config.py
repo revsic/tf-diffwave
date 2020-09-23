@@ -8,14 +8,14 @@ class TrainConfig:
     """
     def __init__(self):
         # optimizer
-        # self.lr_policy = 'fixed
-        # self.learning_rate = 2e-4        
-        self.lr_policy = 'noam'
-        self.learning_rate = 1
-        self.lr_params = {
-            'warmup_steps': 4000,
-            'channels': 64
-        }
+        self.lr_policy = 'fixed'
+        self.learning_rate = 2e-4        
+        # self.lr_policy = 'noam'
+        # self.learning_rate = 1
+        # self.lr_params = {
+        #     'warmup_steps': 4000,
+        #     'channels': 64
+        # }
 
         self.beta1 = 0.9
         self.beta2 = 0.98
@@ -32,7 +32,7 @@ class TrainConfig:
         self.ckpt = './ckpt'
 
         # model name
-        self.name = 'n1'
+        self.name = 'q1'
 
         # interval configuration
         self.eval_intval = 5000
