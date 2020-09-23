@@ -14,7 +14,6 @@ class Block(tf.keras.Model):
         """
         super(Block, self).__init__()
         self.channels = channels
-        self.cond = cond
         self.last = last
 
         self.proj_embed = tf.keras.layers.Dense(channels)
@@ -86,7 +85,6 @@ class WaveNet(tf.keras.Model):
                     config.channels,
                     config.kernel_size,
                     dilation,
-                    config.use_mel,
                     last=i == config.num_layers - 1))
         # [1, 1, C], initial skip block
         self.skip = tf.zeros([1, 1, config.channels])    

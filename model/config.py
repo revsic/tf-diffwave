@@ -15,7 +15,6 @@ class Config:
         self.embedding_factor = 4
 
         # upsampler config
-        self.use_mel = True
         self.upsample_stride = [16, 1]
         self.upsample_kernel = [32, 3]
         self.upsample_layers = 2
@@ -30,7 +29,7 @@ class Config:
         self.num_cycles = 3
 
         # noise schedule
-        self.iter = 50                  # 20, 40, 50
+        self.iter = 20                  # 20, 40, 50
         self.noise_policy = 'linear'
         self.noise_start = 1e-4
         self.noise_end = 0.05           # 0.02 for 200
