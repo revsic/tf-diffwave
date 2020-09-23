@@ -35,7 +35,7 @@ class Trainer:
             .prefetch(tf.data.experimental.AUTOTUNE)
 
         self.optim = tf.keras.optimizers.Adam(
-            config.train.learning_rate,
+            config.train.lr(),
             config.train.beta1,
             config.train.beta2,
             config.train.eps)
