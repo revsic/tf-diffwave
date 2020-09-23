@@ -95,7 +95,7 @@ class WaveNet(tf.keras.Model):
         self.skip = tf.zeros([1, 1, config.channels])    
         # for output
         self.proj_out = [
-            tf.keras.layers.Conv1D(config.channels, 1),
+            tf.keras.layers.Conv1D(config.channels, 1, activation=tf.nn.relu),
             tf.keras.layers.Conv1D(1, 1)]
 
     def call(self, signal, timestep, mel=None):
@@ -118,7 +118,7 @@ class WaveNet(tf.keras.Model):
             # [B, T, M, 1], treat as 2D tensor.
             mel = mel[..., None]
             for upsample in self.upsample:
-                mel = upsample(mel)
+                mel = tf.nn.leaky_relu(upsample(mel), self.config.leak)
             # [B, T, M]
             mel = tf.squeeze(mel, axis=-1)
         # [1, 1, C]
