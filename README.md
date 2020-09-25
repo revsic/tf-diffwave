@@ -40,7 +40,7 @@ python .\train.py --data-dir D:\LJSpeech-1.1\wavs --from-raw
 To start to train from previous checkpoint, `--load-step` is available.
 
 ```bash
-python .\train.py --load-step 416
+python .\train.py --load-step 416 --config ./ckpt/q1.json
 ```
 
 ## Learning Curve
