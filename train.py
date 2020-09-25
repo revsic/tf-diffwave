@@ -181,7 +181,7 @@ class Trainer:
         speech = next(iter(lj.rawset))
         # [1, T // hop, mel]
         _, logmel = lj.mel_fn(speech[None])
-        # [1, T]
+        # [1, T], iter x [1, T]
         pred, ir = self.model(logmel)
         # [T]
         pred = tf.squeeze(pred, axis=0).numpy()
