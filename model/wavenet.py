@@ -1,6 +1,45 @@
 import tensorflow as tf
 
 
+class DilatedConv1d(tf.keras.layers.Layer):
+    """Custom implementation of dilated convolution 1D 
+    because of the issue https://github.com/tensorflow/tensorflow/issues/26797.
+    """
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 kernel_size,
+                 dilation_rate):
+        """Initializer.
+        Args:
+            in_channels: int, input channels.
+            out_channels: int, output channels.
+            kernel_size: int, size of the kernel.
+            dilation_rate: int, dilation rate.
+        """
+        super(DilatedConv1d, self).__init__()
+        self.dilations = dilation_rate
+
+        init = tf.keras.initializers.GlorotUniform()
+        self.kernel = tf.Variable(
+            init([kernel_size, in_channels, out_channels], dtype=tf.float32),
+            trainable=True)
+        self.bias = tf.Variable(
+            tf.zeros([1, 1, out_channels], dtype=tf.float32),
+            trainable=True)
+
+    def call(self, inputs):
+        """Pass to dilated convolution 1d.
+        Args:
+            inputs: tf.Tensor, [B, T, Cin], input tensor.
+        Returns:
+            outputs: tf.Tensor, [B, T', Cout], output tensor.
+        """
+        conv = tf.nn.conv1d(
+            inputs, self.kernel, 1, padding='SAME', dilations=self.dilations)
+        return conv + self.bias
+
+
 class Block(tf.keras.Model):
     """WaveNet Block.
     """
@@ -17,9 +56,8 @@ class Block(tf.keras.Model):
         self.last = last
 
         self.proj_embed = tf.keras.layers.Dense(channels)
-        self.conv = tf.keras.layers.Conv1D(
-            channels * 2, kernel_size, padding='same', dilation_rate=dilation)
-
+        self.conv = DilatedConv1d(
+            channels, channels * 2, kernel_size, dilation)
         self.proj_mel = tf.keras.layers.Conv1D(channels * 2, 1)
 
         if not last:
