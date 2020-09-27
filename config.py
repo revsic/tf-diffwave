@@ -32,7 +32,7 @@ class TrainConfig:
         self.ckpt = './ckpt'
 
         # model name
-        self.name = 'q1'
+        self.name = 'l1'
 
         # interval configuration
         self.eval_intval = 5000
