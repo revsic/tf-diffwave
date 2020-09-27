@@ -79,8 +79,9 @@ class WaveNet(tf.keras.Model):
             for _ in range(config.upsample_layers)]
         # wavenet blocks
         self.blocks = []
+        layers_per_cycle = config.num_layers // config.num_cycles
         for i in range(config.num_layers):
-            dilation = config.dilation_rate ** (i % config.num_cycles)
+            dilation = config.dilation_rate ** (i % layers_per_cycle)
             self.blocks.append(
                 Block(
                     config.channels,
