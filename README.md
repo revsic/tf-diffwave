@@ -43,7 +43,7 @@ To start to train from previous checkpoint, `--load-step` is available.
 python .\train.py --load-step 416 --config ./ckpt/q1.json
 ```
 
-For experiments of errors, reference [expr.ipynb](./expr.ipynb).
+For experiments, reference [expr.ipynb](./expr.ipynb).
 
 To inference test set, run [inference.py](./inference.py).
 
