@@ -45,6 +45,12 @@ python .\train.py --load-step 416 --config ./ckpt/q1.json
 
 For experiments of errors, reference [expr.ipynb](./expr.ipynb).
 
+To inference test set, run [inference.py](./inference.py).
+
+```bash
+python .\inference.py
+```
+
 ## Learning Curve
 
 res.channels=64, T=20, train 500k steps.
