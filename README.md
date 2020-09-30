@@ -51,6 +51,18 @@ To inference test set, run [inference.py](./inference.py).
 python .\inference.py
 ```
 
+Pretrained checkpoints are relased on [releases](https://github.com/revsic/tf-diffwave/releases).
+
+To use pretrained model, download files and unzip it. Followings are sample code.
+
+```py
+with open('l1.json') as f:
+    config = Config.load(json.load(f))
+
+diffwave = DiffWave(config.model)
+diffwave.restore('./l1_500k/l1_500000.ckpt-1').expect_partial()
+```
+
 ## Learning Curve
 
 res.channels=64, T=20, train 500k steps.
