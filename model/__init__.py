@@ -121,4 +121,4 @@ class DiffWave(tf.keras.Model):
         if optim is not None:
             kwargs['optim'] = optim
         ckpt = tf.train.Checkpoint(**kwargs)
-        ckpt.restore(path)
+        return ckpt.restore(path)
