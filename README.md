@@ -47,9 +47,9 @@ For experiments of errors, reference [expr.ipynb](./expr.ipynb).
 
 ## Learning Curve
 
-res.channels=64, T=20
+res.channels=64, T=20, train 500k steps.
 
-<img src="./rsrc/loss.png" width="60%">
+![loss](./rsrc/loss.png)
 
 ## Samples
 
