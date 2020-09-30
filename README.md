@@ -59,4 +59,4 @@ res.channels=64, T=20, train 500k steps.
 
 ## Samples
 
-Comming soon
+Reference [https://revsic.github.io/tf-diffwave](https://revsic.github.io/tf-diffwave).
