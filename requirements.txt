@@ -3,6 +3,6 @@ matplotlib==3.3.1
 numba==0.48                 # for preventing librosa conflict
 numpy==1.19.1
 pydub==0.23.1               # for tensorflow_datasets
-tensorflow==2.1.0
+tensorflow>=2.1.0
 tensorflow_datasets==3.1.0
 tqdm==4.48.2
