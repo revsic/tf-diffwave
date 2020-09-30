@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Audio samples of DiffWave</title>
+    </head>
+
+    <body>
+        <h2>Audio samples of DiffWave</h2>
+
+        (Unofficial) Tensorflow implementation of DiffWave (Zhifeng Kong et al., 2020)
+        <ul>
+            <li>DiffWave: A Versatile Diffusion Model for Audio Synthesis, Zhifeng Kong et al., 2020. [<a href="https://arxiv.org/abs/2009.09761">arXiv:2009.09761</a>]</li> 
+            <li>Repository: <a href="https://github.com/revsic/tf-diffwave">https://github.com/revsic/tf-diffwave</a>
+        </ul>
+
+        <h3>LJ Speech-1.1 Neural Vocoder</h3>
+
+        Audio samples are conditioned by ground-truth mel-spectrogram. <br>
+        <ul>
+            <li>DiffWave: res.channels=64, T=20</li>
+        </ul>
+
+        <table>
+            <thead>
+                <tr align="center">
+                    <th>Ground-truth</th>
+                    <th>DiffWave 500k steps</th>
+                    <th>DiffWave 1M steps<br>(Comming soon..)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><audio controls=""><source src="./sample/LJ006-0266/gt.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/LJ006-0266/pred.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls=""><source src="./sample/LJ013-0027/gt.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/LJ013-0027/pred.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls=""><source src="./sample/LJ037-0269/gt.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/LJ037-0269/pred.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls=""><source src="./sample/LJ048-0186/gt.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/LJ048-0186/pred.wav" type="audio/wav"></audio></td>
+                </tr>
+                <tr>
+                    <td><audio controls=""><source src="./sample/LJ015-0140/gt.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/LJ015-0140/pred.wav" type="audio/wav"></audio></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Denoising Diffusion process of DiffWave</h3>
+        Audio samples from denoising, diffusion process, which subtract and add noise to signal gradually. <br>
+        t=0 for denoised audio, t=N for gaussian noise.
+
+        <h4 style="color:red">WARNING: Turn down the volume.</h4>
+
+        <table>
+            <thead>
+                <tr align="center">
+                    <th>steps</th>
+                    <th>Ground-truth (Diffusion)</th>
+                    <th>DiffWave 500k steps</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+                <tr>
+                    <td>t=20</td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion20.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out20.wav" type="audio/wav"></audio></td>    
+                </tr>
+                <tr>
+                    <td>t=10</td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion10.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out10.wav" type="audio/wav"></audio></td>    
+                </tr>
+                <tr>
+                    <td>t=5</td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion5.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out5.wav" type="audio/wav"></audio></td>    
+                </tr>
+                <tr>
+                    <td>t=4</td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion4.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out4.wav" type="audio/wav"></audio></td>    
+                </tr>
+                <tr>
+                    <td>t=3</td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion3.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out3.wav" type="audio/wav"></audio></td>    
+                </tr>
+                <tr>
+                    <td>t=2</td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion2.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out2.wav" type="audio/wav"></audio></td>    
+                </tr>
+                <tr>
+                    <td>t=1</td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion1.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out1.wav" type="audio/wav"></audio></td>    
+                </tr>
+                <tr>
+                    <td>t=0</td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion0.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out0.wav" type="audio/wav"></audio></td>    
+                </tr>
+            </tbody>
+        </table>
+    
+
+  </body>
+</html>
