@@ -45,8 +45,10 @@ python .\train.py --load-step 416 --config ./ckpt/q1.json
 
 ## Learning Curve
 
-Comming soon
+res.channels=64, T=20
+
+<img src="./rsrc/loss.png" width="60%">
 
 ## Samples
 
-Comming son
+Comming soon
