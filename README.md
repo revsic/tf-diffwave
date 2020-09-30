@@ -43,6 +43,8 @@ To start to train from previous checkpoint, `--load-step` is available.
 python .\train.py --load-step 416 --config ./ckpt/q1.json
 ```
 
+For experiments of errors, reference [expr.ipynb](./expr.ipynb).
+
 ## Learning Curve
 
 res.channels=64, T=20

@@ -4,3 +4,6 @@ __pycache__
 # train
 ckpt
 log
+
+# test sample
+sample
