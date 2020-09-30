@@ -1,9 +1,0 @@
-# python
-__pycache__
-
-# train
-ckpt
-log
-
-# test sample
-sample
