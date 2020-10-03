@@ -60,7 +60,7 @@ with open('l1.json') as f:
     config = Config.load(json.load(f))
 
 diffwave = DiffWave(config.model)
-diffwave.restore('./l1_500k/l1_500000.ckpt-1').expect_partial()
+diffwave.restore('./l1/l1_1000000.ckpt-1').expect_partial()
 ```
 
 ## Learning Curve
