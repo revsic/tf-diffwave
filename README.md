@@ -53,7 +53,7 @@ python .\inference.py
 
 Pretrained checkpoints are relased on [releases](https://github.com/revsic/tf-diffwave/releases).
 
-To use pretrained model, download files and unzip it. Followings are sample script.
+To use pretrained model, download files and unzip it. Checkout git repository to proper commit tags and followings are sample script.
 
 ```py
 with open('l1.json') as f:
