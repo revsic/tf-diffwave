@@ -14,20 +14,24 @@ LJ_DATA_SIZE = 13100
 
 
 def main(args):
+    # prepare directory for samples
     if not os.path.exists(args.sample_dir):
         os.makedirs(args.sample_dir)
     
+    # load checkpoint
     with open(args.config) as f:
         config = Config.load(json.load(f))
 
     diffwave = DiffWave(config.model)
     diffwave.restore(args.ckpt).expect_partial()
 
+    # open dataset
     lj = LJSpeech(config.data)
     if args.offset is None:
         args.offset = config.train.split + \
             np.random.randint(LJ_DATA_SIZE - config.train.split)
 
+    # sample
     print('[*] offset: ', args.offset)
     speech = next(iter(lj.rawset.skip(args.offset)))
     speech = speech[:speech.shape[0] // config.data.hop * config.data.hop]
@@ -36,7 +40,8 @@ def main(args):
         os.path.join(args.sample_dir, str(args.offset) + '_gt.wav'),
         speech.numpy(),
         config.data.sr)
-    
+
+    # inference    
     noise = tf.random.normal(tf.shape(speech[None]))
     librosa.output.write_wav(
         os.path.join(args.sample_dir, str(args.offset) + '_noise.wav'),
@@ -57,7 +62,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--sample-dir', default='./sample')
     parser.add_argument('--config', default='./ckpt/l1.json')
-    parser.add_argument('--ckpt', default='./ckpt/l1/l1_500000.ckpt-1')
-    parser.add_argument('--offset', default=None)
+    parser.add_argument('--ckpt', default='./ckpt/l1/l1_1000000.ckpt-1')
+    parser.add_argument('--offset', default=None, type=int)
     args = parser.parse_args()
     main(args)
