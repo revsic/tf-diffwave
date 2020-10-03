@@ -9,9 +9,9 @@ Tested in python 3.7.3 conda environment, [requirements.txt](./requirements.txt)
 
 ## Usage
 
-For downloading LJ-Speech dataset, in python prompt, run under commands.
+To download LJ-Speech dataset, run under script.
 
-Dataset will be downloaded in '~/tensorflow_datasets' in tfrecord format. If you want to change the download directory, specify `data_dir` parameter of LJSpeech initializer.
+Dataset will be downloaded in '~/tensorflow_datasets' in tfrecord format. If you want to change the download directory, specify `data_dir` parameter of `LJSpeech` initializer.
 
 ```python
 from dataset import LJSpeech
@@ -53,7 +53,7 @@ python .\inference.py
 
 Pretrained checkpoints are relased on [releases](https://github.com/revsic/tf-diffwave/releases).
 
-To use pretrained model, download files and unzip it. Followings are sample code.
+To use pretrained model, download files and unzip it. Followings are sample script.
 
 ```py
 with open('l1.json') as f:
@@ -65,7 +65,7 @@ diffwave.restore('./l1_500k/l1_500000.ckpt-1').expect_partial()
 
 ## Learning Curve
 
-res.channels=64, T=20, train 500k steps.
+res.channels=64, T=20, train 1M steps.
 
 ![loss](./rsrc/loss.png)
 
