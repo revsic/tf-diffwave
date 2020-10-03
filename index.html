@@ -26,29 +26,34 @@
                 <tr align="center">
                     <th>Ground-truth</th>
                     <th>DiffWave (channels=64, T=20, 500k)</th>
-                    <th>DiffWave (1M, comming soon..)</th>
+                    <th>DiffWave (channels=64, T=20, 1M)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><audio controls=""><source src="./sample/LJ006-0266/gt.wav" type="audio/wav"></audio></td>
                     <td><audio controls=""><source src="./sample/LJ006-0266/pred.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/LJ006-0266/pred1m.wav" type="audio/wav"></audio></td>
                 </tr>
                 <tr>
                     <td><audio controls=""><source src="./sample/LJ013-0027/gt.wav" type="audio/wav"></audio></td>
                     <td><audio controls=""><source src="./sample/LJ013-0027/pred.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/LJ013-0027/pred1m.wav" type="audio/wav"></audio></td>
                 </tr>
                 <tr>
                     <td><audio controls=""><source src="./sample/LJ037-0269/gt.wav" type="audio/wav"></audio></td>
                     <td><audio controls=""><source src="./sample/LJ037-0269/pred.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/LJ037-0269/pred1m.wav" type="audio/wav"></audio></td>
                 </tr>
                 <tr>
                     <td><audio controls=""><source src="./sample/LJ048-0186/gt.wav" type="audio/wav"></audio></td>
                     <td><audio controls=""><source src="./sample/LJ048-0186/pred.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/LJ048-0186/pred1m.wav" type="audio/wav"></audio></td>
                 </tr>
                 <tr>
                     <td><audio controls=""><source src="./sample/LJ015-0140/gt.wav" type="audio/wav"></audio></td>
                     <td><audio controls=""><source src="./sample/LJ015-0140/pred.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/LJ015-0140/pred1m.wav" type="audio/wav"></audio></td>
                 </tr>
             </tbody>
         </table>
@@ -65,6 +70,7 @@
                     <th>steps</th>
                     <th>Ground-truth (Diffusion)</th>
                     <th>DiffWave 500k steps</th>
+                    <th>DiffWave 1M steps</th>
                 </tr>
             </thead>
             <tbody align="center">
@@ -72,41 +78,49 @@
                     <td>t=20</td>
                     <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion20.wav" type="audio/wav"></audio></td>
                     <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out20.wav" type="audio/wav"></audio></td>    
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out1m20.wav" type="audio/wav"></audio></td>    
                 </tr>
                 <tr>
                     <td>t=10</td>
                     <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion10.wav" type="audio/wav"></audio></td>
                     <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out10.wav" type="audio/wav"></audio></td>    
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out1m10.wav" type="audio/wav"></audio></td>    
                 </tr>
                 <tr>
                     <td>t=5</td>
                     <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion5.wav" type="audio/wav"></audio></td>
-                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out5.wav" type="audio/wav"></audio></td>    
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out5.wav" type="audio/wav"></audio></td>  
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out1m5.wav" type="audio/wav"></audio></td>  
                 </tr>
                 <tr>
                     <td>t=4</td>
                     <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion4.wav" type="audio/wav"></audio></td>
-                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out4.wav" type="audio/wav"></audio></td>    
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out4.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out1m4.wav" type="audio/wav"></audio></td>
                 </tr>
                 <tr>
                     <td>t=3</td>
                     <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion3.wav" type="audio/wav"></audio></td>
-                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out3.wav" type="audio/wav"></audio></td>    
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out3.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out1m3.wav" type="audio/wav"></audio></td>
                 </tr>
                 <tr>
                     <td>t=2</td>
                     <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion2.wav" type="audio/wav"></audio></td>
-                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out2.wav" type="audio/wav"></audio></td>    
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out2.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out1m2.wav" type="audio/wav"></audio></td>
                 </tr>
                 <tr>
                     <td>t=1</td>
                     <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion1.wav" type="audio/wav"></audio></td>
-                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out1.wav" type="audio/wav"></audio></td>    
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out1.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out1m1.wav" type="audio/wav"></audio></td>
                 </tr>
                 <tr>
                     <td>t=0</td>
                     <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/diffusion0.wav" type="audio/wav"></audio></td>
-                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out0.wav" type="audio/wav"></audio></td>    
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out0.wav" type="audio/wav"></audio></td>
+                    <td><audio controls=""><source src="./sample/diffusion/LJ006-0266/out1m0.wav" type="audio/wav"></audio></td>
                 </tr>
             </tbody>
         </table>
