@@ -85,7 +85,7 @@ class Block(tf.keras.Model):
         gate = tf.math.sigmoid(x[..., self.channels:])
         x = context * gate
         # [B, T, C]
-        residual = self.proj_res(x) + inputs if not self.last else None
+        residual = (self.proj_res(x) + inputs) / 2**0.5 if not self.last else None
         skip = self.proj_skip(x)
         return residual, skip
 
@@ -160,7 +160,7 @@ class WaveNet(tf.keras.Model):
             x, skip = block(x, embed, mel)
             context.append(skip)
         # [B, T, C]
-        context = tf.reduce_sum(context, axis=0)
+        context = tf.reduce_sum(context, axis=0) / len(self.blocks)**0.5
         # [B, T, 1]
         for proj in self.proj_out:
             context = proj(context)
